@@ -1,0 +1,18 @@
+SELECT
+  POST.POST_ID,
+  CONTENT,
+  POST.POSTED_BY,
+  COUNT(
+    CASE
+      WHEN REACTION.REACTION_TYPE IN ("LIKE", "LIT", "WOW", "LOVE") THEN 1
+      ELSE NULL
+    END
+  ) AS positive_reactions_count
+FROM
+  POST
+  LEFT JOIN REACTION ON REACTION.POST_ID = POST.POST_ID
+GROUP BY
+  POST.POST_ID
+ORDER BY
+  positive_reactions_count DESC,
+  post.POST_ID ASC;
